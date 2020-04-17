@@ -1,5 +1,5 @@
 # Feedback collection application
-## Application create with MERN stack
+## Application created with MERN stack
 
 - User signs up via Google OAuth
 - User pays for email credits via stripe
