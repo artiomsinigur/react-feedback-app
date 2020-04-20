@@ -27,20 +27,21 @@ passport.deserializeUser( async(id, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://127.0.0.1:3000/auth/google/callback'
+    callbackURL: process.env.HOST_URL + '/auth/google/callback'
 }, async (accessToken, refreshToken, profile, done) => {
         const { sub, name, email, picture } = profile._json
-        
+        const provider = profile.provider
+
         try {
             // If user exists, fetch it from DB
             const user = await User.findOne({ idProvider: sub })
             if (user) {
-                return done(null, user)
+                done(null, user)
             } else {
                 // If new user, store it in DB
-                const newUser = new User({ idProvider: sub, name, email, picture })
+                const newUser = new User({ idProvider: sub, name, email, picture, provider })
                 await newUser.save()
-                return done(null, newUser)
+                done(null, newUser)
             }
         } catch (error) {
             console.log(error)
@@ -55,12 +56,22 @@ passport.use(new FacebookStrategy({
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: 'http://localhost:3000/auth/facebook/callback',
     profileFields: ['id', 'displayName', 'photos', 'email']
-}, (accessToken, refreshToken, profile, cb) => {
-        const { id, displayName, email } = profile._json
-        console.log('profile ', profile)
-        // User.findOrCreate({ googleId: profile.id }, (err, user) => {
-        //     return cb(err, user)
-        // })
+}, async (accessToken, refreshToken, profile, done) => {
+        const { id, name, email } = profile._json
+        const provider = profile.provider
+        
+        try {
+            const user = await User.findOne({ idProvider: id })
+            if (user) {
+                done(null, user)
+            } else {
+                const newUser = new User({ idProvider: id, email, name, provider })
+                await newUser.save()
+                done(null, newUser)
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 ))
 
@@ -69,15 +80,24 @@ passport.use(new FacebookStrategy({
 passport.use(new TwitterStrategy({
     consumerKey: process.env.TWITTER_API_KEY,
     consumerSecret: process.env.TWITTER_API_SECRET,
-    callbackURL: 'http://127.0.0.1:3000/auth/twitter/callback',
+    callbackURL: process.env.HOST_URL + '/auth/twitter/callback',
     includeEmail: true
-}, (accessToken, refreshToken, profile, cb) => {
-        const { id, name, email } = profile._json
-        console.log('profile ', profile)
-        return cb(err, profile)
-        // User.findOrCreate({ googleId: profile.id }, (err, user) => {
-        //     return cb(err, user)
-        // })
+}, async (accessToken, refreshToken, profile, done) => {
+        const { id, name, email, profile_image_url } = profile._json
+        const provider = profile.provider
+
+        try {
+            const user = await User.findOne({ idProvider: id })
+            if (user) {
+                done(null, user)
+            } else {
+                const newUser = new User({ idProvider: id, email, name, picture: profile_image_url, provider })
+                await newUser.save()
+                done(null, newUser)
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 ))
 
@@ -86,15 +106,24 @@ passport.use(new TwitterStrategy({
 passport.use(new GithubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/github/callback",
+    callbackURL: process.env.HOST_URL + "/auth/github/callback",
     scope: 'user:email',
-}, (accessToken, refreshToken, profile, cb) => {
-        const { id, name } = profile._json
-        console.log('profile ', profile)
-        console.log('email ', profile.emails[0].value)
-        return cb(err, profile)
-        // User.findOrCreate({ googleId: profile.id }, (err, user) => {
-        //     return cb(err, user)
-        // })
+}, async (accessToken, refreshToken, profile, done) => {
+        const { id, name, avatar_url } = profile._json
+        const email = profile.emails[0].value
+        const provider = profile.provider
+
+        try {
+            const user = await User.findOne({ idProvider: id })
+            if (user) {
+                done(null, user)
+            } else {
+                const newUser = new User({ idProvider: id, email, name, picture: avatar_url, provider })
+                await newUser.save()
+                done(null, newUser)
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 ))

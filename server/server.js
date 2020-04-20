@@ -20,6 +20,7 @@ app.use(bodyParser.json())
 
 // read cookies (needed for auth)
 app.use(cookieParser())
+// Store in session the id of current user
 app.use(cookieSession({
     name: 'feedback',
     keys: [process.env.COOKIE_KEY],
