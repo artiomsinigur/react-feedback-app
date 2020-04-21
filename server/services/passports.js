@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('../config/keys')
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const FacebookStrategy = require('passport-facebook').Strategy
@@ -27,7 +27,8 @@ passport.deserializeUser( async(id, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.HOST_URL + '/auth/google/callback'
+    callbackURL: process.env.HOST_URL + '/auth/google/callback',
+    // proxy: true
 }, async (accessToken, refreshToken, profile, done) => {
         const { sub, name, email, picture } = profile._json
         const provider = profile.provider
