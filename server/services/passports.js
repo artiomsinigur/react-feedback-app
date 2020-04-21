@@ -27,7 +27,7 @@ passport.deserializeUser( async(id, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.HOST_URL + '/auth/google/callback',
+    callbackURL: '/auth/google/callback',
     // proxy: true
 }, async (accessToken, refreshToken, profile, done) => {
         const { sub, name, email, picture } = profile._json
@@ -55,7 +55,7 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: 'http://localhost:3000/auth/facebook/callback',
+    callbackURL: process.env.HOST_URL + '/auth/facebook/callback',
     profileFields: ['id', 'displayName', 'photos', 'email']
 }, async (accessToken, refreshToken, profile, done) => {
         const { id, name, email } = profile._json
@@ -81,7 +81,7 @@ passport.use(new FacebookStrategy({
 passport.use(new TwitterStrategy({
     consumerKey: process.env.TWITTER_API_KEY,
     consumerSecret: process.env.TWITTER_API_SECRET,
-    callbackURL: process.env.HOST_URL + '/auth/twitter/callback',
+    callbackURL: '/auth/twitter/callback',
     includeEmail: true
 }, async (accessToken, refreshToken, profile, done) => {
         const { id, name, email, profile_image_url } = profile._json
@@ -107,7 +107,7 @@ passport.use(new TwitterStrategy({
 passport.use(new GithubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: process.env.HOST_URL + "/auth/github/callback",
+    callbackURL: "/auth/github/callback",
     scope: 'user:email',
 }, async (accessToken, refreshToken, profile, done) => {
         const { id, name, avatar_url } = profile._json
