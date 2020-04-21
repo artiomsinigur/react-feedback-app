@@ -56,8 +56,7 @@ passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
     callbackURL: process.env.HOST_URL + '/auth/facebook/callback',
-    profileFields: ['id', 'displayName', 'photos', 'email'],
-    proxy: true
+    profileFields: ['id', 'displayName', 'photos', 'email']
 }, async (accessToken, refreshToken, profile, done) => {
         const { id, name, email } = profile._json
         const provider = profile.provider
