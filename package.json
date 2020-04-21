@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
-    "watch": "nodemon server/server.js"
+    "serve": "nodemon server/server.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run serve\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
@@ -17,6 +19,7 @@
     "custom-env": "^2.0.1",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "http-proxy-middleware": "^1.0.3",
     "mongoose": "^5.9.9",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
@@ -26,6 +29,7 @@
     "validator": "^13.0.0"
   },
   "devDependencies": {
+    "concurrently": "^5.1.0",
     "nodemon": "^2.0.3"
   }
 }

@@ -37,13 +37,13 @@ passport.use(new GoogleStrategy({
             // If user exists, fetch it from DB
             const user = await User.findOne({ idProvider: sub })
             if (user) {
-                done(null, user)
-            } else {
-                // If new user, store it in DB
-                const newUser = new User({ idProvider: sub, name, email, picture, provider })
-                await newUser.save()
-                done(null, newUser)
+                return done(null, user)
             }
+            
+            // If new user, store it in DB
+            const newUser = new User({ idProvider: sub, name, email, picture, provider })
+            await newUser.save()
+            done(null, newUser)
         } catch (error) {
             console.log(error)
         }
@@ -64,12 +64,12 @@ passport.use(new FacebookStrategy({
         try {
             const user = await User.findOne({ idProvider: id })
             if (user) {
-                done(null, user)
-            } else {
-                const newUser = new User({ idProvider: id, email, name, provider })
-                await newUser.save()
-                done(null, newUser)
+                return done(null, user)
             }
+
+            const newUser = new User({ idProvider: id, email, name, provider })
+            await newUser.save()
+            done(null, newUser)
         } catch (error) {
             console.log(error)
         }
@@ -91,12 +91,12 @@ passport.use(new TwitterStrategy({
         try {
             const user = await User.findOne({ idProvider: id })
             if (user) {
-                done(null, user)
-            } else {
-                const newUser = new User({ idProvider: id, email, name, picture: profile_image_url, provider })
-                await newUser.save()
-                done(null, newUser)
+                return done(null, user)
             }
+
+            const newUser = new User({ idProvider: id, email, name, picture: profile_image_url, provider })
+            await newUser.save()
+            done(null, newUser)
         } catch (error) {
             console.log(error)
         }
@@ -119,12 +119,12 @@ passport.use(new GithubStrategy({
         try {
             const user = await User.findOne({ idProvider: id })
             if (user) {
-                done(null, user)
-            } else {
-                const newUser = new User({ idProvider: id, email, name, picture: avatar_url, provider })
-                await newUser.save()
-                done(null, newUser)
+                return done(null, user)
             }
+
+            const newUser = new User({ idProvider: id, email, name, picture: avatar_url, provider })
+            await newUser.save()
+            done(null, newUser)
         } catch (error) {
             console.log(error)
         }

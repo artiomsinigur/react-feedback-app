@@ -12,7 +12,7 @@ const appRouters    = require('./routers/app')
 const authRouters   = require('./routers/auth-routers')
 
 // App configuration
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 5000
 
 // get information from html forms
 app.use(bodyParser.urlencoded({ extended: false }))
