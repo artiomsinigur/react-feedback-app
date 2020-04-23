@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
+import Header from './Header'
 
 export default function App() {
     return (
@@ -8,16 +9,13 @@ export default function App() {
                 <Header />
                 <Switch>
                     <Route exact path="/">
-                        <Header />
+                        <Landing />
                     </Route>
-                    <Route exact path="/service">
-                        <Service />
+                    <Route exact path="/survey">
+                        <Dashboard />
                     </Route>
-                    <Route path="/service/dev">
-                        <Item />
-                    </Route>
-                    <Route path="/contact">
-                        <Contact />
+                    <Route path="/survey/new">
+                        <NewSurvey />
                     </Route>
                     <Route>
                         <NoPageFound />
@@ -28,32 +26,31 @@ export default function App() {
     )
 }
 
-function Header() {
+// function Header() {
+//     return (
+//         <nav>
+//             <li><Link to="/">Home</Link></li>
+//             <li><Link to="/survey">Surveys</Link></li>
+//             <li><Link to="/survey/new">Create survey</Link></li>
+//         </nav>
+//     )
+// }
+
+function Landing() {
     return (
-        <nav>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/service">Service</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
-            <h1>Header page</h1>
-        </nav>
+        <h1>Landing page</h1>
     )
 }
 
-function Service() {
+function Dashboard() {
     return (
-        <h1>Service page</h1>
+        <h1>Dashboard page</h1>
     )
 }
 
-function Item() {
+function NewSurvey() {
     return (
-        <h1>React Super Hero</h1>
-    )
-}
-
-function Contact() {
-    return (
-        <h1>Contact page</h1>
+        <h1>NewSurvey page</h1>
     )
 }
 
