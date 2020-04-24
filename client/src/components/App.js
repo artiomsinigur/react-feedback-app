@@ -1,30 +1,42 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import Header from './Header'
+import { connect } from 'react-redux'
+import * as actions from '../actions'
 
-export default function App() {
-    return (
-        <Router>
-            <div>
-                <Header />
-                <Switch>
-                    <Route exact path="/">
-                        <Landing />
-                    </Route>
-                    <Route exact path="/survey">
-                        <Dashboard />
-                    </Route>
-                    <Route path="/survey/new">
-                        <NewSurvey />
-                    </Route>
-                    <Route>
-                        <NoPageFound />
-                    </Route>
-                </Switch>
+class App extends React.Component {
+    componentDidMount() {
+        this.props.fetchUser()
+    }
+    
+    render () {
+        return (
+            <div className="container">
+                <Router>
+                    <div>
+                        <Header />
+                        <Switch>
+                            <Route exact path="/">
+                                <Landing />
+                            </Route>
+                            <Route exact path="/survey">
+                                <Dashboard />
+                            </Route>
+                            <Route path="/survey/new">
+                                <NewSurvey />
+                            </Route>
+                            <Route>
+                                <NoPageFound />
+                            </Route>
+                        </Switch>
+                    </div>
+                </Router>
             </div>
-        </Router>
-    )
+        )
+    }
 }
+
+export default connect(null, actions)(App)
 
 // function Header() {
 //     return (
@@ -38,6 +50,7 @@ export default function App() {
 
 function Landing() {
     return (
+
         <h1>Landing page</h1>
     )
 }

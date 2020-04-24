@@ -1,16 +1,26 @@
 import React, { Component, Fragment } from 'react'
+import { connect } from 'react-redux'
 
-export default class Header extends Component {
+class Header extends Component {
+    renderContent() {
+        if (this.props.auth === null) {
+            return // Nothing to show. So skip it
+        } else if (this.props.auth === false) {
+            return <li><a href="/auth/google">Login with Google</a></li>
+        } else {
+            return <li><a href="/api/logout">Logout</a></li>
+        }
+    }
+
     render() {
+        console.log(this.props)
         return (
             <Fragment>
                 <nav>
                     <div className="nav-wrapper">
                         <a href="#" className="brand-logo">Feedback</a>
                         <ul id="nav-mobile" className="right hide-on-med-and-down">
-                            <li><a href="sass.html">Sass</a></li>
-                            <li><a href="badges.html">Components</a></li>
-                            <li><a href="collapsible.html">JavaScript</a></li>
+                            {this.renderContent()}
                         </ul>
                     </div>
                 </nav>
@@ -18,3 +28,11 @@ export default class Header extends Component {
         ) 
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        auth: state.auth
+    }
+}
+
+export default connect(mapStateToProps)(Header)
